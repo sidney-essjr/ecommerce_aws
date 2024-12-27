@@ -117,7 +117,7 @@ export class ProductsAppStack extends cdk.Stack {
       },
       environment: {
         PRODUCTS_DDB: this.productsDdb.tableName,
-        PRODUCT_EVENTS_FUNCTION_ARN: productEventsHandler.functionArn,
+        PRODUCT_EVENTS_FUNCTION_NAME: productEventsHandler.functionName,
       },
       layers: [productLayer, productEventsLayer],
     });

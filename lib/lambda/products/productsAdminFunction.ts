@@ -5,7 +5,7 @@ import { Product, ProductRepository } from "/opt/nodejs/productsLayer";
 import * as AWSXRay from "aws-xray-sdk";
 
 const productsDdb = process.env.PRODUCTS_DDB!;
-const productEventsFunctionArn = process.env.PRODUCT_EVENTS_FUNCTION_ARN!;
+const productEventsFunctionName = process.env.PRODUCT_EVENTS_FUNCTION_NAME!;
 
 const ddbClient = new DynamoDB.DocumentClient();
 const lambdaClient = new Lambda();
@@ -132,15 +132,13 @@ function sendProductEvent(
   };
 
   try {
-    return lambdaClient
-      .invoke({
-        FunctionName: productEventsFunctionArn,
+    return lambdaClient.invoke({
+        FunctionName: productEventsFunctionName,
         Payload: JSON.stringify(event),
         InvocationType: "RequestResponse", //invocação sincrona
-      })
-      .promise();
+      }).promise();
   } catch (error) {
     console.error("Error invoking Lambda function:", error);
-    throw new Error(`Failed to invoke lambda function: ${productEventsFunctionArn}`);
+    throw new Error(`Failed to invoke lambda function: ${productEventsFunctionName}`);
   }
 }
